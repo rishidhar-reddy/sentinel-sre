@@ -226,7 +226,7 @@ The symlink makes `platform/.env` point to the root `.env`, so Docker Compose re
 The MCP server Docker Compose needed its own `.env` to connect back to the platform and forward to the K8s monitoring stack.
 
 ```dotenv
-CLUSTER_TOKEN=cl_438450df3cb94ea78760f4e005088c2a
+CLUSTER_TOKEN=${SRE_CLUSTER_TOKEN}
 SAAS_URL=http://localhost:8080
 PROMETHEUS_URL=http://host.docker.internal:9090
 LOKI_URL=http://host.docker.internal:3100
@@ -304,7 +304,7 @@ BASE_URL          = "http://localhost:8080"
 ADMIN_EMAIL       = "admin@example.com"
 ADMIN_PASSWORD    = "admin"
 CLUSTER_ID        = "df4ab154-2b84-4570-93c6-9c9a70ef9baf"
-CLUSTER_TOKEN     = "cl_438450df3cb94ea78760f4e005088c2a"
+CLUSTER_TOKEN     = "${SRE_CLUSTER_TOKEN}"
 
 RUNS_PER_SCENARIO = 3     # pass^k consistency measurement
 POLL_INTERVAL_SEC = 5

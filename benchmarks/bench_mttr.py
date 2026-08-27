@@ -35,6 +35,7 @@ Comparison baseline
 
 import asyncio
 import json
+import os
 import statistics
 import sys
 from datetime import datetime, timezone
@@ -43,11 +44,11 @@ from typing import Optional
 import httpx
 
 # ── Configuration ──────────────────────────────────────────────────────────────
-BASE_URL          = "http://localhost:8080"
-ADMIN_EMAIL       = "admin@example.com"
-ADMIN_PASSWORD    = "admin"
-CLUSTER_ID        = "df4ab154-2b84-4570-93c6-9c9a70ef9baf"
-CLUSTER_TOKEN     = "cl_438450df3cb94ea78760f4e005088c2a"
+BASE_URL          = os.getenv("SRE_BASE_URL", "http://localhost:8080")
+ADMIN_EMAIL       = os.getenv("SRE_ADMIN_EMAIL", "admin@example.com")
+ADMIN_PASSWORD    = os.getenv("SRE_ADMIN_PASSWORD", "admin")
+CLUSTER_ID        = os.getenv("SRE_CLUSTER_ID", "")
+CLUSTER_TOKEN     = os.getenv("SRE_CLUSTER_TOKEN", "")
 
 RUNS_PER_SCENARIO = 3     # pass^k — 3 runs per scenario
                           # NVIDIA NIM (llama-3.3-70b-instruct): generous free credits
