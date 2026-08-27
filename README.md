@@ -1,3 +1,8 @@
+> **Portfolio note:** this repository preserves the original team's full commit history.
+> For what I personally contributed here, see [PORTFOLIO.md](PORTFOLIO.md).
+> Architecture walkthrough: [docs/SYSTEM-DEEPDIVE.md](docs/SYSTEM-DEEPDIVE.md) ·
+> How to evaluate it: [docs/EVALUATION.md](docs/EVALUATION.md)
+
 # SRE Agent Intermediate
 
 SRE Agent Intermediate is a full-stack incident-response system. It is intentionally split into layers so you can reason about the product as an operating model instead of a single application:
