@@ -1,5 +1,4 @@
 > **Note:** this repository preserves the original authors' full commit history.
-> For what I personally contributed here, see [PORTFOLIO.md](PORTFOLIO.md).
 > Architecture walkthrough: [docs/SYSTEM-DEEPDIVE.md](docs/SYSTEM-DEEPDIVE.md) ·
 > How to evaluate it: [docs/EVALUATION.md](docs/EVALUATION.md)
 
