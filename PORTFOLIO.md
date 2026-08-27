@@ -45,10 +45,11 @@ than vague credit for all of it.]
 
 ## My contributions in this repository
 
-Every commit below is authored by me and independently verifiable with
-`git log --author="Rishi Dhar"`.
+Verifiable with `git log --author="Rishidhar Reddy Garlapati"`. Commits are cited by subject rather than hash, since hashes change if history is ever rewritten.
 
-### Found and fixed two routing bugs (`26be932`)
+### Found and fixed two routing bugs
+
+> commit `fix: two routing defects in the supervisor's follow-up handling`
 
 The supervisor's follow-up routing had no test coverage despite deciding which
 specialist handles a question — a wrong call sends the whole investigation down the
@@ -65,14 +66,19 @@ defects:
 
 Test suite: **11 → 32 tests, all passing.**
 
-### Removed hardcoded credentials (`dbc6ddb`)
+### Removed hardcoded credentials
+
+> commit `fix: move benchmark credentials out of source into environment`
 
 A live cluster token, cluster ID, and admin password sat as literals in
 `benchmarks/bench_mttr.py`, and the same token appeared twice in a benchmark write-up.
 Moved to environment variables, with the two secrets defaulting to empty so a
 misconfigured run fails loudly instead of silently authenticating as someone else.
 
-### Documented the architecture and made it evaluable (`de3c3c9`, `459f1b8`)
+### Documented the architecture and made it evaluable
+
+> commits `docs: add engineering deep dive of the agent runtime and MCP layer` and
+> `docs: add a tiered evaluation guide; drop obsolete compose version keys`
 
 Wrote a component-level deep dive traced to specific files and lines, and a four-tier
 evaluation guide so a reviewer can form an opinion in five minutes instead of standing
