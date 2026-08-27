@@ -230,7 +230,11 @@ def _follow_up_specialist_for_question(question: str) -> Optional[str]:
         return "metrics_agent"
     if any(marker in normalized for marker in ("log", "logs", "error", "exception", "trace", "stack trace", "loki")):
         return "logs_agent"
-    if any(marker in normalized for marker in ("github", "code", "commit", "pull request", "pr", "deploy", "release", "rollback", "what changed", "recent change", "change caused")):
+    # "pr" is matched with word boundaries rather than as a bare substring: as
+    # a substring it fires on any word starting with those two letters
+    # ("problem", "approve", "pressure", "process"), silently routing general
+    # questions to the GitHub specialist.
+    if any(marker in normalized for marker in ("github", "code", "commit", "pull request", "deploy", "release", "rollback", "what changed", "recent change", "change caused")) or re.search(r"\bpr\b", normalized):
         return "github_agent"
     if any(marker in normalized for marker in ("runbook", "runbooks", "playbook", "procedure", "next step", "remediation")):
         return "runbooks_agent"
@@ -280,17 +284,25 @@ def _classify_human_interrupt(message: str, current_queue: List[str]) -> Dict[st
 
     if any(marker in normalized for marker in reroute_markers):
         revised_queue = list(current_queue)
-        preferred_agents: List[str] = []
-        if any(marker in normalized for marker in ("logs", "log")):
-            preferred_agents.append("logs_agent")
-        if any(marker in normalized for marker in ("metric", "metrics", "prometheus")):
-            preferred_agents.append("metrics_agent")
-        if "github" in normalized or "code" in normalized:
-            preferred_agents.append("github_agent")
-        if "runbook" in normalized or "runbooks" in normalized or "doc" in normalized:
-            preferred_agents.append("runbooks_agent")
 
-        for agent_name in preferred_agents:
+        # Rank by where each domain is first mentioned, not by the order these
+        # checks happen to be written in, so "logs first, then metrics" and
+        # "metrics first, then logs" produce different queues.
+        domain_markers = (
+            ("logs_agent", ("logs", "log")),
+            ("metrics_agent", ("metric", "metrics", "prometheus")),
+            ("github_agent", ("github", "code")),
+            ("runbooks_agent", ("runbook", "runbooks", "doc")),
+        )
+        mentioned: List[tuple] = []
+        for agent_name, markers in domain_markers:
+            positions = [normalized.find(m) for m in markers if m in normalized]
+            if positions:
+                mentioned.append((min(positions), agent_name))
+        preferred_agents: List[str] = [name for _, name in sorted(mentioned)]
+
+        # Inserted back-to-front so the earliest-mentioned domain ends up first.
+        for agent_name in reversed(preferred_agents):
             if agent_name in revised_queue:
                 revised_queue.remove(agent_name)
             revised_queue.insert(0, agent_name)
